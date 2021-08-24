@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/todaysTaskList">
+
+    <fragment
+        android:id="@+id/todaysTaskList"
+        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TodaysTaskList"
+        android:label="TodaysTaskList" >
+        <action
+            android:id="@+id/action_todaysTaskList_to_taskDetails"
+            app:destination="@id/taskDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskDetails"
+        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskDetails"
+        android:label="TaskDetails" />
+</navigation>
