@@ -6,15 +6,25 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/tv_priority"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Unskippable" />
+
+    <TextView
         android:id="@+id/tv_task_item_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingHorizontal="4dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@id/iv_more"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_priority"
         tools:gravity="center"
         tools:text="Task Title" />
 
@@ -23,26 +33,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
-        app:layout_constraintEnd_toStartOf="@id/tv_priority"
+        app:layout_constraintEnd_toStartOf="@id/tv_item_remaining_time"
         app:layout_constraintStart_toStartOf="@id/tv_task_item_title"
         app:layout_constraintTop_toBottomOf="@id/tv_task_item_title"
         tools:text="at morning" />
 
     <TextView
-        android:id="@+id/tv_priority"
+        android:id="@+id/tv_item_remaining_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="end"
-        app:layout_constraintBottom_toBottomOf="@id/tv_item_time"
-        app:layout_constraintEnd_toEndOf="@id/tv_task_item_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_item_time"
         app:layout_constraintTop_toTopOf="@id/tv_item_time"
-        tools:text="Unskippable" />
+        tools:text="3 hours 27 minutes" />
 
     <ImageView
         android:id="@+id/iv_more"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:contentDescription="@string/more_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
