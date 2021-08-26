@@ -11,9 +11,27 @@
         <action
             android:id="@+id/action_todaysTaskList_to_taskDetails"
             app:destination="@id/taskDetails" />
+        <action
+            android:id="@+id/action_todaysTaskList_to_editTask"
+            app:destination="@id/editTask" />
     </fragment>
     <fragment
         android:id="@+id/taskDetails"
         android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskDetails"
-        android:label="TaskDetails" />
+        android:label="TaskDetails" >
+        <action
+            android:id="@+id/action_taskDetails_to_editTask"
+            app:destination="@id/editTask" />
+        <action
+            android:id="@+id/action_taskDetails_to_todaysTaskList"
+            app:destination="@id/todaysTaskList" />
+    </fragment>
+    <fragment
+        android:id="@+id/editTask"
+        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.EditTask"
+        android:label="EditTask" >
+        <action
+            android:id="@+id/action_editTask_to_todaysTaskList"
+            app:destination="@id/todaysTaskList" />
+    </fragment>
 </navigation>
