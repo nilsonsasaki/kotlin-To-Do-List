@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/taskDetails">
+    app:startDestination="@id/todaysTaskList">
 
     <fragment
         android:id="@+id/todaysTaskList"
@@ -11,27 +11,16 @@
         <action
             android:id="@+id/action_todaysTaskList_to_taskDetails"
             app:destination="@id/taskDetails" />
-        <action
-            android:id="@+id/action_todaysTaskList_to_editTask"
-            app:destination="@id/editTask" />
     </fragment>
     <fragment
         android:id="@+id/taskDetails"
         android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskDetails"
         android:label="TaskDetails" >
         <action
-            android:id="@+id/action_taskDetails_to_editTask"
-            app:destination="@id/editTask" />
-        <action
             android:id="@+id/action_taskDetails_to_todaysTaskList"
             app:destination="@id/todaysTaskList" />
-    </fragment>
-    <fragment
-        android:id="@+id/editTask"
-        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.EditTask"
-        android:label="EditTask" >
-        <action
-            android:id="@+id/action_editTask_to_todaysTaskList"
-            app:destination="@id/todaysTaskList" />
+        <argument
+            android:name="taskTitle"
+            app:argType="string" />
     </fragment>
 </navigation>
