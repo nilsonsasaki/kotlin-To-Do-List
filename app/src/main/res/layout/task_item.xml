@@ -1,75 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout>
 
-    <TextView
-        android:id="@+id/tv_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:textSize="@dimen/small_text_size"
-        app:layout_constraintEnd_toStartOf="@id/tv_priority"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="25/08/2021" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-
-    <TextView
-        android:id="@+id/tv_priority"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:textSize="@dimen/small_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_date"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Unskippable" />
-
-    <TextView
-        android:id="@+id/tv_task_item_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:textSize="@dimen/Large_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_priority"
-        tools:text="Task Title" />
-
-    <TextView
-        android:id="@+id/tv_item_starting_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:textSize="@dimen/small_text_size"
-        app:layout_constraintEnd_toStartOf="@id/tv_item_remaining_time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_task_item_title"
-        tools:text="8:00 to 20:00" />
-
-    <TextView
-        android:id="@+id/tv_item_remaining_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:textSize="@dimen/small_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_item_starting_time"
-        app:layout_constraintTop_toTopOf="@id/tv_item_starting_time"
-        tools:text="Remaining 3 hours 27 minutes" />
-
-    <ImageView
-        android:id="@+id/iv_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_checkbox_blank"
-        android:contentDescription="@string/checkbox"/>
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textSize="@dimen/small_text_size"
+            app:layout_constraintEnd_toStartOf="@id/tv_priority"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="25/08/2021" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_priority"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textSize="@dimen/small_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_date"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Unskippable" />
+
+        <TextView
+            android:id="@+id/tv_task_item_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textSize="@dimen/Large_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_priority"
+            tools:text="Task Title" />
+
+        <TextView
+            android:id="@+id/tv_item_starting_to_end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textSize="@dimen/small_text_size"
+            app:layout_constraintEnd_toStartOf="@id/tv_item_remaining_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_task_item_title"
+            tools:text="8:00 to 20:00" />
+
+        <TextView
+            android:id="@+id/tv_item_remaining_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textSize="@dimen/small_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_item_starting_to_end_time"
+            app:layout_constraintTop_toTopOf="@id/tv_item_starting_to_end_time"
+            tools:text="Remaining 3 hours 27 minutes" />
+
+        <ImageView
+            android:id="@+id/iv_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/checkbox"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_checkbox_blank" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
