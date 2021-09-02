@@ -8,27 +8,27 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_date"
+            android:id="@+id/tv_priority"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textSize="@dimen/small_text_size"
-            app:layout_constraintEnd_toStartOf="@id/tv_priority"
+            app:layout_constraintEnd_toStartOf="@id/tv_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="25/08/2021" />
+            tools:text="Unskippable" />
 
 
         <TextView
-            android:id="@+id/tv_priority"
+            android:id="@+id/tv_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="end"
             android:textSize="@dimen/small_text_size"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_date"
+            app:layout_constraintStart_toEndOf="@id/tv_priority"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Unskippable" />
+            tools:text="25/08/2021" />
 
         <TextView
             android:id="@+id/tv_task_item_title"

@@ -2,25 +2,36 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/todaysTaskList">
+    app:startDestination="@id/allTaskList">
 
     <fragment
-        android:id="@+id/todaysTaskList"
-        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TodaysTaskList"
-        android:label="TodaysTaskList" >
+        android:id="@+id/allTaskList"
+        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.AllTaskList"
+        android:label="AllTaskList" >
         <action
-            android:id="@+id/action_todaysTaskList_to_taskDetails"
+            android:id="@+id/action_allTaskList_to_taskDetails"
             app:destination="@id/taskDetails" />
+        <action
+            android:id="@+id/action_allTaskList_to_add_new_task_Fragment"
+            app:destination="@id/add_new_task_Fragment" />
     </fragment>
     <fragment
         android:id="@+id/taskDetails"
         android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskDetails"
         android:label="TaskDetails" >
         <action
-            android:id="@+id/action_taskDetails_to_todaysTaskList"
-            app:destination="@id/todaysTaskList" />
+            android:id="@+id/action_taskDetails_to_allTaskList"
+            app:destination="@id/allTaskList" />
         <argument
-            android:name="taskTitle"
-            app:argType="string" />
+            android:name="task_id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/add_new_task_Fragment"
+        android:name="com.nilsonsasaki.kotlin_to_do_list.add_new_task_Fragment"
+        android:label="add_new_task_Fragment" >
+        <action
+            android:id="@+id/action_add_new_task_Fragment_to_allTaskList"
+            app:destination="@id/allTaskList" />
     </fragment>
 </navigation>
