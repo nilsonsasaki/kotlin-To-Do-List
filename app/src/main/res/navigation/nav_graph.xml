@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/add_new_task_Fragment"
-        android:name="com.nilsonsasaki.kotlin_to_do_list.add_new_task_Fragment"
+        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.edit_task_Fragment"
         android:label="add_new_task_Fragment" >
         <action
             android:id="@+id/action_add_new_task_Fragment_to_allTaskList"
