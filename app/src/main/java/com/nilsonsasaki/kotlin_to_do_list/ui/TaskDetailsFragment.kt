@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.nilsonsasaki.kotlin_to_do_list.TaskApplication
 import com.nilsonsasaki.kotlin_to_do_list.database.Task
@@ -13,9 +14,9 @@ import com.nilsonsasaki.kotlin_to_do_list.databinding.FragmentTaskDetailsBinding
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModel
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModelFactory
 
-class TaskDetails : Fragment() {
+class TaskDetailsFragment : Fragment() {
 
-    private val navigationArgs: TaskDetailsArgs by navArgs()
+    private val navigationArgs: TaskDetailsFragmentArgs by navArgs()
     lateinit var task :Task
 
     private var _binding: FragmentTaskDetailsBinding? = null
@@ -44,6 +45,17 @@ class TaskDetails : Fragment() {
             selectedTask -> task = selectedTask
             bind(task)
         }
+        binding.btReturnButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
+        binding.btDeleteButton.setOnClickListener {
+            deleteTask()
+        }
+    }
+
+    private fun deleteTask(){
+        viewModel.deleteTask(task)
+        findNavController().navigateUp()
     }
 
     private fun bind (task:Task){
