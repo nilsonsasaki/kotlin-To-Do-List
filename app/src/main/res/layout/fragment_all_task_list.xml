@@ -7,10 +7,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/side_margin"
-        tools:context=".ui.AllTaskList">
+        tools:context=".ui.TaskListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_todays_tasks"
+            android:id="@+id/rv_task_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
