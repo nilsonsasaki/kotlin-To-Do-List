@@ -12,7 +12,7 @@ import com.nilsonsasaki.kotlin_to_do_list.databinding.FragmentAllTaskListBinding
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModel
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModelFactory
 
-class AllTaskListFragment : Fragment() {
+class TaskListFragment : Fragment() {
 
     private var _binding: FragmentAllTaskListBinding?= null
 
@@ -36,7 +36,7 @@ class AllTaskListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val taskItemAdapter = TaskItemAdapter {
-            val action = AllTaskListFragmentDirections.actionAllTaskListToTaskDetails(it.id)
+            val action = TaskListFragmentDirections.actionAllTaskListToTaskDetails(it.id)
             this.findNavController().navigate(action)
         }
         binding.rvTaskList.layoutManager = LinearLayoutManager(this.context)
@@ -47,7 +47,7 @@ class AllTaskListFragment : Fragment() {
         }
 
         binding.floatingActionButton.setOnClickListener{
-            val action = AllTaskListFragmentDirections.actionAllTaskListToAddNewTaskFragment()
+            val action = TaskListFragmentDirections.actionAllTaskListToAddNewTaskFragment()
             this.findNavController().navigate(action)
         }
     }

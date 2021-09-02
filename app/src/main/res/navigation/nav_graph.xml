@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/allTaskList"
-        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.AllTaskList"
+        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskListFragment"
         android:label="AllTaskList" >
         <action
             android:id="@+id/action_allTaskList_to_taskDetails"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/taskDetails"
-        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskDetails"
+        android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskDetailsFragment"
         android:label="TaskDetails" >
         <action
             android:id="@+id/action_taskDetails_to_allTaskList"
