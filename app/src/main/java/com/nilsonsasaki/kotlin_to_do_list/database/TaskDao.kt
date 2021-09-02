@@ -8,14 +8,14 @@ interface TaskDao {
     @Query("SELECT * FROM task ORDER BY date ASC,starting_time ASC")
     fun getAllTasks(): Flow<List<Task>>
 
-    @Query("SELECT * FROM task WHERE date = :itemDate ORDER BY starting_time ASC")
-    fun getByDate(itemDate: String): Flow<List<Task>>
+    @Query("SELECT * FROM task WHERE date =:taskDate ORDER BY starting_time ASC")
+    fun getByDate(taskDate: String): Flow<List<Task>>
 
     @Query("SELECT * FROM task ORDER BY date ASC,starting_time ASC")
     fun getAllByPriority(): Flow<List<Task>>
 
-    @Query("SELECT * FROM task WHERE id = :itemId")
-    fun getTaskById(itemId: Int): Flow<Task>
+    @Query("SELECT * FROM task WHERE id =:taskId")
+    fun getTaskById(taskId: Int): Flow<Task>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(task: Task)
