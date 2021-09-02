@@ -1,11 +1,8 @@
 package com.nilsonsasaki.kotlin_to_do_list.ui.models
 
-import android.app.ActivityManager
-import android.icu.text.CaseMap
 import androidx.lifecycle.*
 import com.nilsonsasaki.kotlin_to_do_list.database.Task
 import com.nilsonsasaki.kotlin_to_do_list.database.TaskDao
-import com.nilsonsasaki.kotlin_to_do_list.ui.TaskDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -19,6 +16,12 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
 
     fun getTaskById(itemId: Int): LiveData<Task> = taskDao.getTaskById(itemId).asLiveData()
 
+    fun deleteTask(task: Task){
+        viewModelScope.launch {
+            taskDao.delete(task)
+        }
+    }
+
 
     fun addNewTask(
         taskTitle: String,
@@ -29,15 +32,15 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
         taskPeriodicity: String,
         taskDescription: String
     ) {
-        val newTask: Task = Task(
+        val newTask = Task(
             id = 0,
             title = taskTitle,
             date = taskDate,
             startingTime = taskStartingTime,
             endingTime = taskEndingTime,
             priority = taskPriority,
-            periodicity = taskPeriodicity ?: "none",
-            description = taskDescription ?: "none"
+            periodicity = taskPeriodicity,
+            description = taskDescription
         )
         insertTask(newTask)
     }
