@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.edit_task_Fragment">
+        tools:context=".ui.EditTaskFragment">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/et_task_title"

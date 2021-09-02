@@ -12,7 +12,7 @@ import com.nilsonsasaki.kotlin_to_do_list.databinding.FragmentEditTaskBinding
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModel
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModelFactory
 
-class edit_task_Fragment : Fragment() {
+class EditTaskFragment : Fragment() {
 
     private var _binding : FragmentEditTaskBinding? = null
     private val binding get() = _binding!!
@@ -46,7 +46,7 @@ class edit_task_Fragment : Fragment() {
                 binding.etTaskPeriodicity.editText?.text.toString(),
                 binding.etTaskDescription.editText?.text.toString()
             )
-            val action = edit_task_FragmentDirections.actionAddNewTaskFragmentToAllTaskList()
+            val action = EditTaskFragmentDirections.actionAddNewTaskFragmentToAllTaskList()
             findNavController().navigate(action)
 
         }
