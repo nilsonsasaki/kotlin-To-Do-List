@@ -50,6 +50,9 @@ class EditTaskFragment : Fragment() {
             findNavController().navigate(action)
 
         }
+        binding.cancelButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
 }
