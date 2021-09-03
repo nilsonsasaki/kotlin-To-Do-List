@@ -3,36 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/allTaskList">
+    app:startDestination="@id/taskListFragment">
 
     <fragment
-        android:id="@+id/allTaskList"
+        android:id="@+id/taskListFragment"
         android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskListFragment"
-        android:label="AllTaskList" >
+        android:label="TaskListFragment">
         <action
-            android:id="@+id/action_allTaskList_to_taskDetails"
-            app:destination="@id/taskDetails" />
+            android:id="@+id/action_taskListFragment_to_taskDetailsFragment"
+            app:destination="@id/taskDetailsFragment" />
         <action
-            android:id="@+id/action_allTaskList_to_add_new_task_Fragment"
+            android:id="@+id/action_taskList_to_editTaskFragment"
             app:destination="@id/editTaskFragment" />
     </fragment>
     <fragment
-        android:id="@+id/taskDetails"
+        android:id="@+id/taskDetailsFragment"
         android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskDetailsFragment"
-        android:label="TaskDetails" >
+        android:label="TaskDetailsFragment">
         <action
-            android:id="@+id/action_taskDetails_to_allTaskList"
-            app:destination="@id/allTaskList" />
+            android:id="@+id/action_taskDetailsFragment_to_taskListFragment"
+            app:destination="@id/taskListFragment" />
         <argument
             android:name="task_id"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_taskDetails_to_editTaskFragment"
+            app:destination="@id/editTaskFragment" />
     </fragment>
     <fragment
         android:id="@+id/editTaskFragment"
         android:name="com.nilsonsasaki.kotlin_to_do_list.ui.EditTaskFragment"
         android:label="editTaskFragment">
         <action
-            android:id="@+id/action_add_new_task_Fragment_to_allTaskList"
-            app:destination="@id/allTaskList" />
+            android:id="@+id/action_editTask_Fragment_to_taskListFragment"
+            app:destination="@id/taskListFragment" />
+        <argument
+            android:name="item_id"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>
