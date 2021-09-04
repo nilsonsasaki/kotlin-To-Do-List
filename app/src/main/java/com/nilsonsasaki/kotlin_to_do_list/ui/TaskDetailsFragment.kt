@@ -45,17 +45,21 @@ class TaskDetailsFragment : Fragment() {
             selectedTask -> task = selectedTask
             bind(task)
         }
+        binding.fabEditTask.setOnClickListener {
+            val action  = TaskDetailsFragmentDirections.actionTaskDetailsToEditTaskFragment(id)
+            findNavController().navigate(action)
+        }
         binding.btReturnButton.setOnClickListener {
             findNavController().navigateUp()
         }
         binding.btDeleteButton.setOnClickListener {
             deleteTask()
+            findNavController().navigateUp()
         }
     }
 
     private fun deleteTask(){
         viewModel.deleteTask(task)
-        findNavController().navigateUp()
     }
 
     private fun bind (task:Task){
