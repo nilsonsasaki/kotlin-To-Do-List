@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
     app:startDestination="@id/taskListFragment">
 
@@ -11,9 +10,10 @@
         android:label="TaskListFragment">
         <action
             android:id="@+id/action_taskListFragment_to_taskDetailsFragment"
-            app:destination="@id/taskDetailsFragment" />
+            app:destination="@id/taskDetailsFragment"
+            app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_taskList_to_editTaskFragment"
+            android:id="@+id/action_taskListFragment_to_editTaskFragment"
             app:destination="@id/editTaskFragment" />
     </fragment>
     <fragment
@@ -22,7 +22,9 @@
         android:label="TaskDetailsFragment">
         <action
             android:id="@+id/action_taskDetailsFragment_to_taskListFragment"
-            app:destination="@id/taskListFragment" />
+            app:destination="@id/taskListFragment"
+            app:popUpTo="@id/taskListFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="task_id"
             app:argType="integer" />
@@ -36,7 +38,9 @@
         android:label="editTaskFragment">
         <action
             android:id="@+id/action_editTask_Fragment_to_taskListFragment"
-            app:destination="@id/taskListFragment" />
+            app:destination="@id/taskListFragment"
+            app:popUpTo="@id/taskListFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="item_id"
             app:argType="integer"
