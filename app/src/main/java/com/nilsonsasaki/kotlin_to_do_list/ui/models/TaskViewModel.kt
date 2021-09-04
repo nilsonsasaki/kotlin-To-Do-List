@@ -23,31 +23,23 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
     }
 
 
-    fun addNewTask(
-        taskTitle: String,
-        taskDate: String,
-        taskStartingTime: String,
-        taskEndingTime: String,
-        taskPriority: String,
-        taskPeriodicity: String,
-        taskDescription: String
-    ) {
-        val newTask = Task(
-            id = 0,
-            title = taskTitle,
-            date = taskDate,
-            startingTime = taskStartingTime,
-            endingTime = taskEndingTime,
-            priority = taskPriority,
-            periodicity = taskPeriodicity,
-            description = taskDescription
-        )
+    fun addNewTask(newTask:Task){
         insertTask(newTask)
     }
 
     private fun insertTask(task: Task) {
         viewModelScope.launch {
             taskDao.insert(task)
+        }
+    }
+
+    fun updateTask(updatedTask:Task){
+        update(updatedTask)
+    }
+
+    private fun update(updatedTask:Task){
+        viewModelScope.launch {
+            taskDao.update(updatedTask)
         }
     }
 }

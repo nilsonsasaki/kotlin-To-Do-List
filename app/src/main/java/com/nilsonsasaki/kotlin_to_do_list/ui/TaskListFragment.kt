@@ -36,7 +36,7 @@ class TaskListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val taskItemAdapter = TaskItemAdapter {
-            val action = TaskListFragmentDirections.actionAllTaskListToTaskDetails(it.id)
+            val action = TaskListFragmentDirections.actionTaskListFragmentToTaskDetailsFragment(it.id)
             this.findNavController().navigate(action)
         }
         binding.rvTaskList.layoutManager = LinearLayoutManager(this.context)
@@ -47,7 +47,7 @@ class TaskListFragment : Fragment() {
         }
 
         binding.floatingActionButton.setOnClickListener{
-            val action = TaskListFragmentDirections.actionAllTaskListToAddNewTaskFragment()
+            val action = TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment()
             this.findNavController().navigate(action)
         }
     }
