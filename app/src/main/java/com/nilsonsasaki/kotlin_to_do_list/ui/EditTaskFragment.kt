@@ -1,21 +1,29 @@
 package com.nilsonsasaki.kotlin_to_do_list.ui
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.nilsonsasaki.kotlin_to_do_list.TaskApplication
 import com.nilsonsasaki.kotlin_to_do_list.database.Task
 import com.nilsonsasaki.kotlin_to_do_list.databinding.FragmentEditTaskBinding
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat.CLOCK_12H
+import com.nilsonsasaki.kotlin_to_do_list.R
+import com.nilsonsasaki.kotlin_to_do_list.extensions.text
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModel
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModelFactory
+import java.util.*
 
-class EditTaskFragment : Fragment() {
+class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
 
     private var _binding: FragmentEditTaskBinding? = null
     private val binding get() = _binding!!
@@ -23,6 +31,26 @@ class EditTaskFragment : Fragment() {
     private val navigationArgs: EditTaskFragmentArgs by navArgs()
 
     lateinit var task: Task
+
+    private var day = 0
+    private var month = 0
+    private var year = 0
+    private var hour = 0
+    private var minute = 0
+    private var isStartingTime: Boolean = false
+
+    private fun getDateCalendar() {
+        val cal: Calendar = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+    }
+
+    private fun getTimeCalendar() {
+        val cal: Calendar = Calendar.getInstance()
+        hour = cal.get(Calendar.HOUR)
+        minute = cal.get(Calendar.MINUTE)
+    }
 
     private val viewModel: TaskViewModel by activityViewModels {
         TaskViewModelFactory(
@@ -65,15 +93,55 @@ class EditTaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fun loadTaskValues(){
-            task=Task(navigationArgs.itemId,
+        fun loadTaskValues() {
+            task = Task(
+                navigationArgs.itemId,
                 binding.etTaskTitle.editText?.text.toString(),
                 binding.etTaskDate.editText?.text.toString(),
                 binding.etTaskStartingTime.editText?.text.toString(),
                 binding.etTaskEndingTime.editText?.text.toString(),
                 binding.etTaskPriority.editText?.text.toString(),
                 binding.etTaskPeriodicity.editText?.text.toString(),
-                binding.etTaskDescription.editText?.text.toString())
+                binding.etTaskDescription.editText?.text.toString()
+            )
+        }
+
+        binding.etTaskDate.editText?.setOnClickListener {
+            getDateCalendar()
+            DatePickerDialog(requireContext(), this, year, month, day).show()
+        }
+
+        binding.etTaskStartingTime.editText?.setOnClickListener {
+            getTimeCalendar()
+            isStartingTime = true
+            TimePickerDialog(requireContext(), this, hour, minute, true).show()
+        }
+
+        binding.etTaskEndingTime.editText?.setOnClickListener {
+            getTimeCalendar()
+            isStartingTime = false
+            TimePickerDialog(requireContext(), this, hour, minute, true).show()
+        }
+
+        val items = listOf("Material", "Design", "Components", "Android")
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu, items)
+        (binding.etTaskPriority.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+
+        binding.etTaskStartingTime.setOnClickListener {
+            val startingTimePicker = MaterialTimePicker.Builder()
+                .setTimeFormat(CLOCK_12H)
+                .setTitleText("Select starting time")
+                .build()
+            startingTimePicker.addOnPositiveButtonClickListener {
+                val timeText: String = if (startingTimePicker.minute in 1..9) {
+                    "${startingTimePicker.hour}:0${startingTimePicker.minute}"
+                } else {
+                    "${startingTimePicker.hour}:${startingTimePicker.minute}"
+                }
+                binding.etTaskStartingTime.text = timeText
+
+                startingTimePicker.showsDialog
+            }
         }
 
         if (navigationArgs.itemId > 0) {
@@ -98,4 +166,21 @@ class EditTaskFragment : Fragment() {
         }
     }
 
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        binding.etTaskDate.text = "$dayOfMonth/$month/$year"
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        val timeText = if (minute in 0..9) {
+            "$hourOfDay:0$minute"
+        } else {
+            "$hourOfDay:$minute"
+        }
+        if (isStartingTime) {
+
+            binding.etTaskStartingTime.text = timeText
+        } else {
+            binding.etTaskEndingTime.text = timeText
+        }
+    }
 }
