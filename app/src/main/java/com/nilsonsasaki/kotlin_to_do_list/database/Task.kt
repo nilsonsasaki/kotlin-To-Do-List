@@ -26,9 +26,6 @@ data class Task(
     @NonNull @ColumnInfo(name = "priority")
     val priority: String,
 
-    @ColumnInfo(name = "periodicity")
-    val periodicity: String,
-
     @ColumnInfo(name = "description")
     val description: String,
 
