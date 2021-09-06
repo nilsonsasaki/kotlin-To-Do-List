@@ -33,7 +33,7 @@ class TaskItemAdapter(
             binding.tvTaskItemTitle.text = task.title
             binding.tvDate.text = task.date
             binding.tvItemStartingToEndTime.text = "${task.startingTime} to ${task.endingTime}"
-            binding.tvPriority.text = task.priority
+            binding.tvPriority.text = "${task.priority} priority"
         }
 
     }
