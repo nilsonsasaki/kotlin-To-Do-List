@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.nilsonsasaki.kotlin_to_do_list.R
 import com.nilsonsasaki.kotlin_to_do_list.TaskApplication
 import com.nilsonsasaki.kotlin_to_do_list.database.Task
 import com.nilsonsasaki.kotlin_to_do_list.databinding.FragmentTaskDetailsBinding
@@ -17,7 +18,7 @@ import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModelFactory
 class TaskDetailsFragment : Fragment() {
 
     private val navigationArgs: TaskDetailsFragmentArgs by navArgs()
-    lateinit var task :Task
+    lateinit var task: Task
 
     private var _binding: FragmentTaskDetailsBinding? = null
     private val binding get() = _binding!!
@@ -41,12 +42,14 @@ class TaskDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val id = navigationArgs.taskId
-        viewModel.getTaskById(id).observe(this.viewLifecycleOwner){
-            selectedTask -> task = selectedTask
+        viewModel.getTaskById(id).observe(this.viewLifecycleOwner) { selectedTask ->
+            task = selectedTask
             bind(task)
         }
         binding.fabEditTask.setOnClickListener {
-            val action  = TaskDetailsFragmentDirections.actionTaskDetailsToEditTaskFragment(id)
+            val action = TaskDetailsFragmentDirections.actionTaskDetailsToEditTaskFragment(
+                itemId = id, title = getString(R.string.tile_edit_task)
+            )
             findNavController().navigate(action)
         }
         binding.btReturnButton.setOnClickListener {
@@ -58,14 +61,14 @@ class TaskDetailsFragment : Fragment() {
         }
     }
 
-    private fun deleteTask(){
+    private fun deleteTask() {
         viewModel.deleteTask(task)
     }
 
-    private fun bind (task:Task){
+    private fun bind(task: Task) {
         binding.tvDate.text = task.date
-        binding.tvStartingTime.text = task.startingTime
-        binding.tvEndingTime.text = task.endingTime
+        binding.tvPriority.text = getString(R.string.priority_description_text,task.priority)
+        binding.tvTime.text = getString(R.string.time_description_text,task.startingTime,task.endingTime)
         binding.tvTaskTitle.text = task.title
         binding.tvTaskDescription.text = task.description
     }
