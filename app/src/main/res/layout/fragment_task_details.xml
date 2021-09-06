@@ -10,6 +10,17 @@
         tools:context=".ui.TaskDetailsFragment">
 
         <TextView
+            android:id="@+id/tv_priority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/small_text_size"
+            tools:text="Priority"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_task_title"/>
+
+        <TextView
             android:id="@+id/tv_task_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,9 +28,8 @@
             android:padding="@dimen/side_margin"
             android:textSize="@dimen/Large_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_priority"
             tools:text="@string/hello_blank_fragment" />
-
 
         <TextView
             android:id="@+id/tv_date"
@@ -28,32 +38,21 @@
             android:layout_marginTop="@dimen/margin_between_elements"
             android:gravity="start"
             android:textSize="@dimen/small_text_size"
-            app:layout_constraintEnd_toStartOf="@id/tv_starting_time"
+            app:layout_constraintEnd_toStartOf="@id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_task_title"
             tools:text="25/08/2021" />
 
         <TextView
-            android:id="@+id/tv_starting_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="@dimen/small_text_size"
-            app:layout_constraintEnd_toStartOf="@id/tv_ending_time"
-            app:layout_constraintStart_toEndOf="@id/tv_date"
-            app:layout_constraintTop_toTopOf="@id/tv_date"
-            tools:text="Start at: 9:20" />
-
-        <TextView
-            android:id="@+id/tv_ending_time"
+            android:id="@+id/tv_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="end"
             android:textSize="@dimen/small_text_size"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_starting_time"
+            app:layout_constraintStart_toEndOf="@id/tv_date"
             app:layout_constraintTop_toTopOf="@id/tv_date"
-            tools:text="End at: 20:40" />
+            tools:text="Start at: 9:20" />
 
         <TextView
             android:id="@+id/tv_task_description"
