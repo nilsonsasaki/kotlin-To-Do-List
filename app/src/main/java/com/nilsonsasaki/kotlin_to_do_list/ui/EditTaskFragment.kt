@@ -14,8 +14,6 @@ import androidx.navigation.fragment.navArgs
 import com.nilsonsasaki.kotlin_to_do_list.TaskApplication
 import com.nilsonsasaki.kotlin_to_do_list.database.Task
 import com.nilsonsasaki.kotlin_to_do_list.databinding.FragmentEditTaskBinding
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat.CLOCK_12H
 import com.nilsonsasaki.kotlin_to_do_list.R
 import com.nilsonsasaki.kotlin_to_do_list.extensions.text
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModel
@@ -38,6 +36,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     private var hour = 0
     private var minute = 0
     private var isStartingTime: Boolean = false
+    private var hasError: Boolean = false
 
     private fun getDateCalendar() {
         val cal: Calendar = Calendar.getInstance()
@@ -85,26 +84,12 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             etTaskStartingTime.editText?.setText(task.startingTime, TextView.BufferType.SPANNABLE)
             etTaskEndingTime.editText?.setText(task.endingTime, TextView.BufferType.SPANNABLE)
             etTaskPriority.editText?.setText(task.priority, TextView.BufferType.SPANNABLE)
-            etTaskPeriodicity.editText?.setText(task.periodicity, TextView.BufferType.SPANNABLE)
             etTaskDescription.editText?.setText(task.description, TextView.BufferType.SPANNABLE)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        fun loadTaskValues() {
-            task = Task(
-                navigationArgs.itemId,
-                binding.etTaskTitle.editText?.text.toString(),
-                binding.etTaskDate.editText?.text.toString(),
-                binding.etTaskStartingTime.editText?.text.toString(),
-                binding.etTaskEndingTime.editText?.text.toString(),
-                binding.etTaskPriority.editText?.text.toString(),
-                binding.etTaskPeriodicity.editText?.text.toString(),
-                binding.etTaskDescription.editText?.text.toString()
-            )
-        }
 
         binding.etTaskDate.editText?.setOnClickListener {
             getDateCalendar()
@@ -123,47 +108,66 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             TimePickerDialog(requireContext(), this, hour, minute, true).show()
         }
 
-        val items = listOf("Material", "Design", "Components", "Android")
+        val items = listOf("Very Low", "Low", "Normal", "High", "Very High")
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu, items)
         (binding.etTaskPriority.editText as? AutoCompleteTextView)?.setAdapter(adapter)
-
-        binding.etTaskStartingTime.setOnClickListener {
-            val startingTimePicker = MaterialTimePicker.Builder()
-                .setTimeFormat(CLOCK_12H)
-                .setTitleText("Select starting time")
-                .build()
-            startingTimePicker.addOnPositiveButtonClickListener {
-                val timeText: String = if (startingTimePicker.minute in 1..9) {
-                    "${startingTimePicker.hour}:0${startingTimePicker.minute}"
-                } else {
-                    "${startingTimePicker.hour}:${startingTimePicker.minute}"
-                }
-                binding.etTaskStartingTime.text = timeText
-
-                startingTimePicker.showsDialog
-            }
-        }
 
         if (navigationArgs.itemId > 0) {
             getSelectedTask()
             binding.btSaveButton.setOnClickListener {
-                loadTaskValues()
-                viewModel.updateTask(task)
-                findNavController().navigateUp()
+                checkValues()
+                if (!hasError) {
+                    loadTaskValues()
+                    viewModel.updateTask(task)
+                    findNavController().navigateUp()
+                }
             }
 
         } else {
-
             binding.btSaveButton.setOnClickListener {
-                loadTaskValues()
-                viewModel.addNewTask(task)
-                val action = EditTaskFragmentDirections.actionEditTaskFragmentToTaskListFragment()
-                findNavController().navigate(action)
+                checkValues()
+                if (!hasError) {
+                    loadTaskValues()
+                    viewModel.addNewTask(task)
+                    val action =
+                        EditTaskFragmentDirections.actionEditTaskFragmentToTaskListFragment()
+                    findNavController().navigate(action)
+                }
             }
         }
         binding.cancelButton.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    private fun loadTaskValues() {
+        task = Task(
+            navigationArgs.itemId,
+            binding.etTaskTitle.editText?.text.toString(),
+            binding.etTaskDate.editText?.text.toString(),
+            binding.etTaskStartingTime.editText?.text.toString(),
+            binding.etTaskEndingTime.editText?.text.toString(),
+            binding.etTaskPriority.editText?.text.toString(),
+            binding.etTaskDescription.editText?.text.toString()
+        )
+    }
+
+    private fun checkValue(field: EditText): Boolean {
+        return if (field.text.isBlank()) {
+            field.error = "Required"
+            true
+        } else {
+            field.error = null
+            false
+        }
+    }
+
+    private fun checkValues() {
+        hasError = (checkValue(binding.etTaskTitle.editText!!)
+                || checkValue(binding.etTaskDate.editText!!)
+                || checkValue(binding.etTaskPriority.editText!!)
+                || checkValue(binding.etTaskStartingTime.editText!!)
+                || checkValue(binding.etTaskEndingTime.editText!!))
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
