@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/taskListFragment"
         android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskListFragment"
-        android:label="TaskListFragment">
+        android:label="Tasks">
         <action
             android:id="@+id/action_taskListFragment_to_taskDetailsFragment"
             app:destination="@id/taskDetailsFragment"
@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/taskDetailsFragment"
         android:name="com.nilsonsasaki.kotlin_to_do_list.ui.TaskDetailsFragment"
-        android:label="TaskDetailsFragment">
+        android:label="Task Details">
         <action
             android:id="@+id/action_taskDetailsFragment_to_taskListFragment"
             app:destination="@id/taskListFragment"
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/editTaskFragment"
         android:name="com.nilsonsasaki.kotlin_to_do_list.ui.EditTaskFragment"
-        android:label="editTaskFragment">
+        android:label="{title}">
         <action
             android:id="@+id/action_editTask_Fragment_to_taskListFragment"
             app:destination="@id/taskListFragment"
@@ -45,5 +45,8 @@
             android:name="item_id"
             app:argType="integer"
             android:defaultValue="0" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
 </navigation>
