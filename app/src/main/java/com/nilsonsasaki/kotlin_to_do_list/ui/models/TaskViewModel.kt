@@ -3,16 +3,13 @@ package com.nilsonsasaki.kotlin_to_do_list.ui.models
 import androidx.lifecycle.*
 import com.nilsonsasaki.kotlin_to_do_list.database.Task
 import com.nilsonsasaki.kotlin_to_do_list.database.TaskDao
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
 
     val allTasks: LiveData<List<Task>> = taskDao.getAllTasks().asLiveData()
 
-    fun getByDate(itemDate: String): Flow<List<Task>> = taskDao.getByDate(itemDate)
-
-    fun getAllByPriority(): Flow<List<Task>> = taskDao.getAllByPriority()
+    fun getByDate(itemDate: String): LiveData<List<Task>> = taskDao.getByDate(itemDate).asLiveData()
 
     fun getTaskById(itemId: Int): LiveData<Task> = taskDao.getTaskById(itemId).asLiveData()
 
