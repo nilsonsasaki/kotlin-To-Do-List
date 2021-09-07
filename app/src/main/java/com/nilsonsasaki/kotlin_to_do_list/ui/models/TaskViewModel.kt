@@ -13,14 +13,13 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
 
     fun getTaskById(itemId: Int): LiveData<Task> = taskDao.getTaskById(itemId).asLiveData()
 
-    fun deleteTask(task: Task){
+    fun deleteTask(task: Task) {
         viewModelScope.launch {
             taskDao.delete(task)
         }
     }
 
-
-    fun addNewTask(newTask:Task){
+    fun addNewTask(newTask: Task) {
         insertTask(newTask)
     }
 
@@ -30,11 +29,11 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
         }
     }
 
-    fun updateTask(updatedTask:Task){
+    fun updateTask(updatedTask: Task) {
         update(updatedTask)
     }
 
-    private fun update(updatedTask:Task){
+    private fun update(updatedTask: Task) {
         viewModelScope.launch {
             taskDao.update(updatedTask)
         }
