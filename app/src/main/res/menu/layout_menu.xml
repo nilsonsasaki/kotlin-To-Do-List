@@ -4,7 +4,6 @@
 
     <item
         android:id="@+id/action_filter_results"
-        android:icon="@drawable/ic_more"
         android:title="@string/action_all_tasks"
         app:showAsAction="always" />
 
