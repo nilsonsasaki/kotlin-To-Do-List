@@ -28,31 +28,45 @@ class TaskListFragment : Fragment() {
         )
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAllTaskListBinding.inflate(inflater, container, false)
         return binding.root
-        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val taskItemAdapter = TaskItemAdapter {
-            val action =
-                TaskListFragmentDirections.actionTaskListFragmentToTaskDetailsFragment(it.id)
-            this.findNavController().navigate(action)
-        }
         binding.rvTaskList.layoutManager = LinearLayoutManager(this.context)
-        binding.rvTaskList.adapter = taskItemAdapter
         binding.rvTaskList.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),
                 LinearLayoutManager.VERTICAL
             )
         )
+        toggleFilter()
+
+        binding.floatingActionButton.setOnClickListener {
+            val action = TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(
+                title = getString(R.string.title_create_task))
+            this.findNavController().navigate(action)
+        }
+    }
+
+    private fun toggleFilter() {
+        val taskItemAdapter = TaskItemAdapter {
+            val action =
+                TaskListFragmentDirections.actionTaskListFragmentToTaskDetailsFragment(it.id)
+            this.findNavController().navigate(action)
+        }
+        binding.rvTaskList.adapter = taskItemAdapter
         if (isShowingAllTasks) {
             viewModel.allTasks.observe(this.viewLifecycleOwner) { tasks ->
                 tasks.let { taskItemAdapter.submitList(it) }
@@ -67,16 +81,11 @@ class TaskListFragment : Fragment() {
                 tasks.let { taskItemAdapter.submitList(it) }
             }
         }
-
-        binding.floatingActionButton.setOnClickListener {
-            val action = TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(
-                title = getString(R.string.title_create_task))
-            this.findNavController().navigate(action)
-        }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.layout_menu,menu)
 
         val filterList = menu.findItem(R.id.action_filter_results)
         setMenuText(filterList)
@@ -97,6 +106,7 @@ class TaskListFragment : Fragment() {
             R.id.action_filter_results ->{
                 isShowingAllTasks=!isShowingAllTasks
                 setMenuText(item)
+                toggleFilter()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
