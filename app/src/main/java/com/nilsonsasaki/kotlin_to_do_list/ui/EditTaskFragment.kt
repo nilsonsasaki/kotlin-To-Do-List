@@ -28,28 +28,16 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     private val navigationArgs: EditTaskFragmentArgs by navArgs()
 
-    lateinit var task: Task
+    lateinit var task :Task
 
     private var day = 0
     private var month = 0
     private var year = 0
     private var hour = 0
     private var minute = 0
+
     private var isStartingTime: Boolean = false
     private var hasError: Boolean = false
-
-    private fun getDateCalendar() {
-        val cal: Calendar = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
-    }
-
-    private fun getTimeCalendar() {
-        val cal: Calendar = Calendar.getInstance()
-        hour = cal.get(Calendar.HOUR)
-        minute = cal.get(Calendar.MINUTE)
-    }
 
     private val viewModel: TaskViewModel by activityViewModels {
         TaskViewModelFactory(
@@ -58,6 +46,18 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         )
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getDateAndTimeCalendar()
+        task =Task(
+            id = 0,
+            title = "",
+            date = getString(R.string.edit_task_date_text,day,month,year)
+            ,startingTime = getTimeText(hour,minute),
+            endingTime = getTimeText(hour+1,minute),
+            priority = "Normal",
+            description = "")
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,50 +67,13 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         return binding.root
     }
 
-    private fun getSelectedTask() {
-
-        viewModel.getTaskById(navigationArgs.itemId)
-            .observe(this.viewLifecycleOwner) { selectedTask ->
-                task = selectedTask
-                bindSelectedTask(task)
-            }
-
-    }
-
-    private fun bindSelectedTask(task: Task) {
-        binding.apply {
-            etTaskTitle.editText?.setText(task.title, TextView.BufferType.SPANNABLE)
-            etTaskDate.editText?.setText(task.date, TextView.BufferType.SPANNABLE)
-            etTaskStartingTime.editText?.setText(task.startingTime, TextView.BufferType.SPANNABLE)
-            etTaskEndingTime.editText?.setText(task.endingTime, TextView.BufferType.SPANNABLE)
-            etTaskPriority.editText?.setText(task.priority, TextView.BufferType.SPANNABLE)
-            etTaskDescription.editText?.setText(task.description, TextView.BufferType.SPANNABLE)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.etTaskDate.editText?.setOnClickListener {
-            getDateCalendar()
-            DatePickerDialog(requireContext(), this, year, month, day).show()
-        }
-
-        binding.etTaskStartingTime.editText?.setOnClickListener {
-            getTimeCalendar()
-            isStartingTime = true
-            TimePickerDialog(requireContext(), this, hour, minute, true).show()
-        }
-
-        binding.etTaskEndingTime.editText?.setOnClickListener {
-            getTimeCalendar()
-            isStartingTime = false
-            TimePickerDialog(requireContext(), this, hour, minute, true).show()
-        }
-
         val items = listOf("Very Low", "Low", "Normal", "High", "Very High")
-        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu, items)
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_menu, items.reversed())
         (binding.etTaskPriority.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+        setOnClickListeners()
 
         if (navigationArgs.itemId > 0) {
             getSelectedTask()
@@ -124,6 +87,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             }
 
         } else {
+            bindTask(task)
             binding.btSaveButton.setOnClickListener {
                 checkValues()
                 if (!hasError) {
@@ -137,6 +101,51 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         }
         binding.cancelButton.setOnClickListener {
             findNavController().navigateUp()
+        }
+    }
+
+    private fun setOnClickListeners() {
+        binding.etTaskDate.editText?.setOnClickListener {
+            DatePickerDialog(requireContext(), this, year, month, day).show()
+        }
+
+        binding.etTaskStartingTime.editText?.setOnClickListener {
+            isStartingTime = true
+            TimePickerDialog(requireContext(), this, hour, minute, true).show()
+        }
+
+        binding.etTaskEndingTime.editText?.setOnClickListener {
+            isStartingTime = false
+            TimePickerDialog(requireContext(), this, hour, minute, true).show()
+        }
+
+    }
+
+    private fun getDateAndTimeCalendar() {
+
+        val cal: Calendar = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+        hour = cal.get(Calendar.HOUR)
+        minute = cal.get(Calendar.MINUTE)
+    }
+    private fun getSelectedTask(){
+        viewModel.getTaskById(navigationArgs.itemId)
+            .observe(this.viewLifecycleOwner) { selectedTask ->
+                task = selectedTask
+                bindTask(task)
+            }
+    }
+
+    private fun bindTask(task: Task) {
+        binding.apply {
+            etTaskTitle.editText?.setText(task.title, TextView.BufferType.SPANNABLE)
+            etTaskDate.editText?.setText(task.date, TextView.BufferType.SPANNABLE)
+            etTaskStartingTime.editText?.setText(task.startingTime, TextView.BufferType.SPANNABLE)
+            etTaskEndingTime.editText?.setText(task.endingTime, TextView.BufferType.SPANNABLE)
+            etTaskPriority.editText?.setText(task.priority, TextView.BufferType.SPANNABLE)
+            etTaskDescription.editText?.setText(task.description, TextView.BufferType.SPANNABLE)
         }
     }
 
@@ -175,16 +184,19 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        val timeText = if (minute in 0..9) {
-            "$hourOfDay:0$minute"
-        } else {
-            "$hourOfDay:$minute"
-        }
         if (isStartingTime) {
-
-            binding.etTaskStartingTime.text = timeText
+            binding.etTaskStartingTime.text = getTimeText(hourOfDay,minute)
+            binding.etTaskEndingTime.text = getTimeText(hourOfDay+1,minute)
         } else {
-            binding.etTaskEndingTime.text = timeText
+            binding.etTaskEndingTime.text = getTimeText(hourOfDay,minute)
         }
+    }
+    private fun getTimeText(hour: Int, minute:Int):String{
+        val timeText: String = if (minute in 0..9) {
+            "$hour:0$minute"
+        } else {
+            "$hour:$minute"
+        }
+        return timeText
     }
 }
