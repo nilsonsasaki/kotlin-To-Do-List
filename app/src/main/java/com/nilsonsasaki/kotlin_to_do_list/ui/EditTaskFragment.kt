@@ -99,9 +99,6 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 }
             }
         }
-        binding.cancelButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
     }
 
     private fun setOnClickListeners() {
@@ -119,6 +116,9 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             TimePickerDialog(requireContext(), this, hour, minute, true).show()
         }
 
+        binding.cancelButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun getDateAndTimeCalendar() {
