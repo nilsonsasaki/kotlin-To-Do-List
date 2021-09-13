@@ -64,7 +64,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             viewModel.setTask(Task(
                 id = 0,
                 title = "",
-                date = getString(R.string.edit_task_date_text, day, month, year),
+                date = getString(R.string.edit_task_date_text, day, month+1, year),
                 startingTime = getTimeText(hour, minute),
                 endingTime = getTimeText(hour + 1, minute),
                 priority = "Normal",
@@ -189,7 +189,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        binding.etTaskDate.text = "$dayOfMonth/$month/$year"
+        binding.etTaskDate.text = "$dayOfMonth/${month+1}/$year"
         loadTaskValues()
     }
 
