@@ -72,29 +72,10 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             ))
         }
         setOnClickListeners()
-
-        if (isEditingTask) {
+        if (isEditingTask){
             getSelectedTask()
-            binding.btSaveButton.setOnClickListener {
-                checkValues()
-                if (!hasError) {
-                    loadTaskValues()
-                    viewModel.updateTask(task)
-                    findNavController().navigateUp()
-                }
-            }
         } else {
             getNewTask()
-            binding.btSaveButton.setOnClickListener {
-                checkValues()
-                if (!hasError) {
-                    loadTaskValues()
-                    viewModel.addNewTask(task)
-                    val action =
-                        EditTaskFragmentDirections.actionEditTaskFragmentToTaskListFragment()
-                    findNavController().navigate(action)
-                }
-            }
         }
     }
 
@@ -119,6 +100,19 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         binding.etTaskEndingTime.editText?.setOnClickListener {
             isStartingTime = false
             TimePickerDialog(requireContext(), this, hour, minute, true).show()
+        }
+        binding.btSaveButton.setOnClickListener {
+            checkValues()
+            loadTaskValues()
+            if (!hasError&&isEditingTask) {
+                viewModel.updateTask(task)
+                findNavController().navigateUp()
+            } else if (!hasError&&!isEditingTask){
+                viewModel.addNewTask(task)
+                val action =
+                    EditTaskFragmentDirections.actionEditTaskFragmentToTaskListFragment()
+                findNavController().navigate(action)
+            }
         }
 
         binding.cancelButton.setOnClickListener {
