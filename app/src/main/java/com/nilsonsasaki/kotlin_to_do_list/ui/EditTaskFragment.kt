@@ -60,8 +60,8 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         super.onViewCreated(view, savedInstanceState)
         getDateAndTimeCalendar()
         isEditingTask = (navigationArgs.itemId > 0)
-        if (!isEditingTask) {
-            viewModel.setTask(Task(
+        if (!isEditingTask&&viewModel.hasChangedValues.value==false) {
+            viewModel.setEditingTask(Task(
                 id = 0,
                 title = "",
                 date = getString(R.string.edit_task_date_text, day, month+1, year),
@@ -72,14 +72,14 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             ))
         }
         setOnClickListeners()
-        if (isEditingTask){
+        if (isEditingTask&&viewModel.hasChangedValues.value==false){
             getSelectedTask()
         } else {
-            getNewTask()
+            getEditingTask()
         }
     }
 
-    private fun getNewTask() {
+    private fun getEditingTask() {
         viewModel.editingTask.observe(viewLifecycleOwner,{editingTask->
             task=editingTask
             bindTask(task)
@@ -106,9 +106,11 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             loadTaskValues()
             if (!hasError&&isEditingTask) {
                 viewModel.updateTask(task)
+                viewModel.setHasChangedValues(false)
                 findNavController().navigateUp()
             } else if (!hasError&&!isEditingTask){
                 viewModel.addNewTask(task)
+                viewModel.setHasChangedValues(false)
                 val action =
                     EditTaskFragmentDirections.actionEditTaskFragmentToTaskListFragment()
                 findNavController().navigate(action)
@@ -204,5 +206,12 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             "$hour:$minute"
         }
         return timeText
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        loadTaskValues()
+        viewModel.setEditingTask(task)
+        viewModel.setHasChangedValues(true)
     }
 }
