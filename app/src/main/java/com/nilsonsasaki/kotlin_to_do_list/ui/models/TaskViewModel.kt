@@ -1,6 +1,7 @@
 package com.nilsonsasaki.kotlin_to_do_list.ui.models
 
 import androidx.lifecycle.*
+import com.nilsonsasaki.kotlin_to_do_list.R
 import com.nilsonsasaki.kotlin_to_do_list.database.Task
 import com.nilsonsasaki.kotlin_to_do_list.database.TaskDao
 import kotlinx.coroutines.launch
@@ -8,6 +9,24 @@ import kotlinx.coroutines.launch
 class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
 
     val allTasks: LiveData<List<Task>> = taskDao.getAllTasks().asLiveData()
+
+    private val _editingTask: MutableLiveData<Task> = MutableLiveData(
+        Task(
+            id = 0,
+            title = "",
+            date = "",
+            startingTime = "",
+            endingTime = "",
+            priority = "Normal",
+            description = ""
+        )
+    )
+    val editingTask: LiveData<Task> = _editingTask
+
+    fun setTask(editingTask: Task) {
+        _editingTask.value = editingTask
+    }
+
 
     fun getByDate(itemDate: String): LiveData<List<Task>> = taskDao.getByDate(itemDate).asLiveData()
 
