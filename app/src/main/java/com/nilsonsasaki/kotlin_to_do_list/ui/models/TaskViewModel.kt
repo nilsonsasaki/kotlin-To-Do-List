@@ -10,23 +10,31 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
 
     val allTasks: LiveData<List<Task>> = taskDao.getAllTasks().asLiveData()
 
+    private val emptyTask = Task(
+        id = 0,
+        title = "",
+        date = "",
+        startingTime = "",
+        endingTime = "",
+        priority = "Normal",
+        description = ""
+    )
+
     private val _editingTask: MutableLiveData<Task> = MutableLiveData(
-        Task(
-            id = 0,
-            title = "",
-            date = "",
-            startingTime = "",
-            endingTime = "",
-            priority = "Normal",
-            description = ""
-        )
+        emptyTask
     )
     val editingTask: LiveData<Task> = _editingTask
 
-    fun setTask(editingTask: Task) {
+    fun setEditingTask(editingTask: Task) {
         _editingTask.value = editingTask
     }
 
+    private val _hasChangedValues: MutableLiveData<Boolean> = MutableLiveData(false)
+    val hasChangedValues: LiveData<Boolean> = _hasChangedValues
+
+    fun setHasChangedValues(value:Boolean){
+        _hasChangedValues.value = value
+    }
 
     fun getByDate(itemDate: String): LiveData<List<Task>> = taskDao.getByDate(itemDate).asLiveData()
 
