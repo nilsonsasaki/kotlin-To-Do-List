@@ -47,23 +47,6 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        getDateAndTimeCalendar()
-        isEditingTask = (navigationArgs.itemId > 0)
-        if (!isEditingTask) {
-            task = Task(
-                id = 0,
-                title = "",
-                date = getString(R.string.edit_task_date_text, day, month, year),
-                startingTime = getTimeText(hour, minute),
-                endingTime = getTimeText(hour + 1, minute),
-                priority = "Normal",
-                description = ""
-            )
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,7 +58,19 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        getDateAndTimeCalendar()
+        isEditingTask = (navigationArgs.itemId > 0)
+        if (!isEditingTask) {
+            viewModel.setTask(Task(
+                id = 0,
+                title = "",
+                date = getString(R.string.edit_task_date_text, day, month, year),
+                startingTime = getTimeText(hour, minute),
+                endingTime = getTimeText(hour + 1, minute),
+                priority = "Normal",
+                description = ""
+            ))
+        }
         setOnClickListeners()
 
         if (isEditingTask) {
@@ -88,9 +83,8 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                     findNavController().navigateUp()
                 }
             }
-
         } else {
-            bindTask(task)
+            getNewTask()
             binding.btSaveButton.setOnClickListener {
                 checkValues()
                 if (!hasError) {
@@ -102,6 +96,14 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 }
             }
         }
+    }
+
+    private fun getNewTask() {
+        viewModel.editingTask.observe(viewLifecycleOwner,{editingTask->
+            task=editingTask
+            bindTask(task)
+        })
+
     }
 
     private fun setOnClickListeners() {
@@ -188,6 +190,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         binding.etTaskDate.text = "$dayOfMonth/$month/$year"
+        loadTaskValues()
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
@@ -197,6 +200,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         } else {
             binding.etTaskEndingTime.text = getTimeText(hourOfDay, minute)
         }
+        loadTaskValues()
     }
 
     private fun getTimeText(hour: Int, minute: Int): String {
