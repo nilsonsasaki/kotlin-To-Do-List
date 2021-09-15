@@ -29,6 +29,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     private val navigationArgs: EditTaskFragmentArgs by navArgs()
 
     lateinit var task: Task
+    lateinit var errorsMap : Map<String,String>
 
     private var day = 0
     private var month = 0
@@ -59,6 +60,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getDateAndTimeCalendar()
+
         isEditingTask = (navigationArgs.itemId > 0)
         if (!isEditingTask&&viewModel.hasChangedValues.value==false) {
             viewModel.setEditingTask(Task(
@@ -71,12 +73,12 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 description = ""
             ))
         }
-        setOnClickListeners()
         if (isEditingTask&&viewModel.hasChangedValues.value==false){
             getSelectedTask()
         } else {
             getEditingTask()
         }
+        setOnClickListeners()
     }
 
     private fun getEditingTask() {
@@ -84,7 +86,6 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             task=editingTask
             bindTask(task)
         })
-
     }
 
     private fun setOnClickListeners() {
@@ -102,8 +103,9 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             TimePickerDialog(requireContext(), this, hour, minute, true).show()
         }
         binding.btSaveButton.setOnClickListener {
-            checkValues()
             loadTaskValues()
+            setErrorObserver()
+            checkForErrors()
             if (!hasError&&isEditingTask) {
                 viewModel.updateTask(task)
                 viewModel.setHasChangedValues(false)
@@ -166,27 +168,48 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         )
     }
 
-    private fun checkValue(field: EditText): Boolean {
-        return if (field.text.isBlank()) {
-            field.error = "Required"
-            true
-        } else {
-            field.error = null
-            false
+    private fun setErrorObserver() {
+        val testMap:Map<String,EditText> = mapOf(
+            "title" to binding.etTaskTitle.editText!!,
+            "date" to binding.etTaskDate.editText!!,
+            "startingTime" to binding.etTaskStartingTime.editText!!,
+            "endingTime" to binding.etTaskEndingTime.editText!!,
+            "priority" to binding.etTaskPriority.editText!!,
+        )
+        viewModel.inputErrorsMap.observe(this.viewLifecycleOwner){
+                newMap -> errorsMap = newMap
+            for (currentEditText in errorsMap.keys){
+                testMap[currentEditText]!!.error = errorsMap[currentEditText]
+            }
         }
     }
 
-    private fun checkValues() {
-        hasError = (checkValue(binding.etTaskTitle.editText!!)
-                || checkValue(binding.etTaskDate.editText!!)
-                || checkValue(binding.etTaskPriority.editText!!)
-                || checkValue(binding.etTaskStartingTime.editText!!)
-                || checkValue(binding.etTaskEndingTime.editText!!))
+    private fun checkForErrors(){
+        checkBlankValue()
     }
+
+    private fun checkBlankValue(){
+        val testMap:Map<String,EditText> = mapOf(
+            "title" to binding.etTaskTitle.editText!!,
+            "date" to binding.etTaskDate.editText!!,
+            "startingTime" to binding.etTaskStartingTime.editText!!,
+            "endingTime" to binding.etTaskEndingTime.editText!!,
+            "priority" to binding.etTaskPriority.editText!!,
+        )
+        hasError = false
+        for (currentEditText in testMap.keys){
+            if (testMap[currentEditText]?.text.isNullOrBlank()){
+                errorsMap = errorsMap + mapOf<String,String>(
+                    currentEditText to getString(R.string.blank_input_error_text,currentEditText))
+                hasError=true
+            }
+        }
+        viewModel.setInputErrorsMap(errorsMap)
+    }
+
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         binding.etTaskDate.text = "$dayOfMonth/${month+1}/$year"
-        loadTaskValues()
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
@@ -196,7 +219,6 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         } else {
             binding.etTaskEndingTime.text = getTimeText(hourOfDay, minute)
         }
-        loadTaskValues()
     }
 
     private fun getTimeText(hour: Int, minute: Int): String {
