@@ -15,7 +15,9 @@ import com.nilsonsasaki.kotlin_to_do_list.TaskApplication
 import com.nilsonsasaki.kotlin_to_do_list.database.Task
 import com.nilsonsasaki.kotlin_to_do_list.databinding.FragmentEditTaskBinding
 import com.nilsonsasaki.kotlin_to_do_list.R
+import com.nilsonsasaki.kotlin_to_do_list.extensions.dateFormat
 import com.nilsonsasaki.kotlin_to_do_list.extensions.text
+import com.nilsonsasaki.kotlin_to_do_list.extensions.timeFormat
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModel
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModelFactory
 import java.util.*
@@ -67,9 +69,9 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 Task(
                     id = 0,
                     title = "",
-                    date = getString(R.string.edit_task_date_text, day, month + 1, year),
-                    startingTime = getTimeText(hour, minute),
-                    endingTime = getTimeText(hour + 1, minute),
+                    date = dateFormat(day, month + 1, year),
+                    startingTime = timeFormat(hour, minute),
+                    endingTime = timeFormat(hour + 1, minute),
                     priority = "Normal",
                     description = ""
                 )
@@ -140,7 +142,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         day = cal.get(Calendar.DAY_OF_MONTH)
         month = cal.get(Calendar.MONTH)
         year = cal.get(Calendar.YEAR)
-        hour = cal.get(Calendar.HOUR)
+        hour = cal.get(Calendar.HOUR_OF_DAY)
         minute = cal.get(Calendar.MINUTE)
     }
 
@@ -215,29 +217,15 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        if (dayOfMonth in 1..9) {
-            binding.etTaskDate.text = " $dayOfMonth/${month + 1}/$year"
-        } else {
-            binding.etTaskDate.text = "$dayOfMonth/${month + 1}/$year"
-        }
+        binding.etTaskDate.text = dateFormat(dayOfMonth, month, year)
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         if (isStartingTime) {
-            binding.etTaskStartingTime.text = getTimeText(hourOfDay, minute)
-            binding.etTaskEndingTime.text = getTimeText(hourOfDay + 1, minute)
+            binding.etTaskStartingTime.text = timeFormat(hourOfDay, minute)
         } else {
-            binding.etTaskEndingTime.text = getTimeText(hourOfDay, minute)
+            binding.etTaskEndingTime.text = timeFormat(hourOfDay, minute)
         }
-    }
-
-    private fun getTimeText(hour: Int, minute: Int): String {
-        val timeText: String = if (minute in 0..9) {
-            "$hour:0$minute"
-        } else {
-            "$hour:$minute"
-        }
-        return timeText
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
