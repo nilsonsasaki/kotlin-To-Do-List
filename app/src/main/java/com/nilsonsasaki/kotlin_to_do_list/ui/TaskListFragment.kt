@@ -11,6 +11,7 @@ import com.nilsonsasaki.kotlin_to_do_list.R
 import com.nilsonsasaki.kotlin_to_do_list.TaskApplication
 import com.nilsonsasaki.kotlin_to_do_list.adapters.TaskItemAdapter
 import com.nilsonsasaki.kotlin_to_do_list.databinding.FragmentAllTaskListBinding
+import com.nilsonsasaki.kotlin_to_do_list.extensions.dateFormat
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModel
 import com.nilsonsasaki.kotlin_to_do_list.ui.models.TaskViewModelFactory
 import java.util.*
@@ -77,7 +78,7 @@ class TaskListFragment : Fragment() {
             val day = cal.get(Calendar.DATE)
             val month = cal.get(Calendar.MONTH)
             val year = cal.get(Calendar.YEAR)
-            viewModel.getByDate("$day/$month/$year").observe(this.viewLifecycleOwner) { tasks ->
+            viewModel.getByDate(dateFormat(day,month+1,year)).observe(this.viewLifecycleOwner) { tasks ->
                 tasks.let { taskItemAdapter.submitList(it) }
             }
         }
