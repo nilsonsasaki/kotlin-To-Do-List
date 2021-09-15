@@ -29,7 +29,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     private val navigationArgs: EditTaskFragmentArgs by navArgs()
 
     lateinit var task: Task
-    lateinit var errorsMap: Map<String, String>
+    private lateinit var errorsMap: Map<String, String>
 
     private var day = 0
     private var month = 0
