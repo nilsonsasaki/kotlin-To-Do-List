@@ -36,6 +36,20 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
         _hasChangedValues.value = value
     }
 
+    private val _inputErrorsMap :MutableLiveData<Map<String,String>> = MutableLiveData(mapOf<String,String>())
+    val inputErrorsMap:LiveData<Map<String,String>> = _inputErrorsMap
+
+    fun setInputErrorsMap(errorsMap:Map<String,String>){
+        _inputErrorsMap.value = errorsMap
+    }
+
+    fun clearErrorsMap(){
+        _inputErrorsMap.value = mapOf<String,String>()
+    }
+
+    private val _hasInputErrors:MutableLiveData<Boolean> = MutableLiveData(false)
+    val hasImputErrors:LiveData<Boolean> = _hasInputErrors
+
     fun getByDate(itemDate: String): LiveData<List<Task>> = taskDao.getByDate(itemDate).asLiveData()
 
     fun getTaskById(itemId: Int): LiveData<Task> = taskDao.getTaskById(itemId).asLiveData()
