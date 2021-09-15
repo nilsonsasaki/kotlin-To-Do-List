@@ -48,7 +48,11 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
     }
 
     private val _hasInputErrors:MutableLiveData<Boolean> = MutableLiveData(false)
-    val hasImputErrors:LiveData<Boolean> = _hasInputErrors
+    val hasInputErrors:LiveData<Boolean> = _hasInputErrors
+
+    fun setHasInputErrors(value: Boolean){
+        _hasInputErrors.value=value
+    }
 
     fun getByDate(itemDate: String): LiveData<List<Task>> = taskDao.getByDate(itemDate).asLiveData()
 
