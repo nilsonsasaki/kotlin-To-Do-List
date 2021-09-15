@@ -111,11 +111,11 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             if (!hasError && isEditingTask) {
 
                 viewModel.updateTask(task)
-                viewModel.setHasChangedValues(false)
+                clearEditingValues()
                 findNavController().navigateUp()
             } else if (!hasError && !isEditingTask) {
                 viewModel.addNewTask(task)
-                viewModel.setHasChangedValues(false)
+                clearEditingValues()
                 val action =
                     EditTaskFragmentDirections.actionEditTaskFragmentToTaskListFragment()
                 findNavController().navigate(action)
@@ -124,7 +124,14 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
         binding.cancelButton.setOnClickListener {
             findNavController().navigateUp()
+            clearEditingValues()
         }
+    }
+
+    private fun clearEditingValues() {
+        viewModel.clearErrorsMap()
+        viewModel.setHasChangedValues(false)
+        viewModel.setHasInputErrors(false)
     }
 
     private fun getDateAndTimeCalendar() {
@@ -172,15 +179,21 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun setErrorObserver() {
+        viewModel.hasInputErrors.observe(this.viewLifecycleOwner) { newValue ->
+            hasError = newValue
+        }
         viewModel.inputErrorsMap.observe(this.viewLifecycleOwner) { newMap ->
             errorsMap = newMap
             for (currentEditText in errorsMap.keys) {
-                when (currentEditText){
+                when (currentEditText) {
                     "title" -> binding.etTaskTitle.editText?.error = errorsMap[currentEditText]
                     "date" -> binding.etTaskDate.editText?.error = errorsMap[currentEditText]
-                    "startingTime" -> binding.etTaskStartingTime.editText?.error = errorsMap[currentEditText]
-                    "endingTime"-> binding.etTaskEndingTime.editText?.error = errorsMap[currentEditText]
-                    "priority"-> binding.etTaskPriority.editText?.error = errorsMap[currentEditText]
+                    "startingTime" -> binding.etTaskStartingTime.editText?.error =
+                        errorsMap[currentEditText]
+                    "endingTime" -> binding.etTaskEndingTime.editText?.error =
+                        errorsMap[currentEditText]
+                    "priority" -> binding.etTaskPriority.editText?.error =
+                        errorsMap[currentEditText]
                 }
             }
         }
@@ -191,25 +204,15 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun checkBlankValue() {
-        val testMap: Map<String, EditText> = mapOf(
-            "title" to binding.etTaskTitle.editText!!,
-            "date" to binding.etTaskDate.editText!!,
-            "startingTime" to binding.etTaskStartingTime.editText!!,
-            "endingTime" to binding.etTaskEndingTime.editText!!,
-            "priority" to binding.etTaskPriority.editText!!,
-        )
-        hasError = false
-        for (currentEditText in testMap.keys) {
-            if (testMap[currentEditText]?.text.isNullOrBlank()) {
-                errorsMap = errorsMap + mapOf(
-                    currentEditText to getString(R.string.blank_input_error_text, currentEditText)
-                )
-                hasError = true
-            }
+        if (binding.etTaskTitle.editText?.text.isNullOrBlank()) {
+            errorsMap = errorsMap + mapOf(
+                "title" to getString(R.string.blank_input_error_text, "title")
+            )
+            viewModel.setHasChangedValues(true)
+            viewModel.setHasInputErrors(true)
+            viewModel.setInputErrorsMap(errorsMap)
         }
-        viewModel.setInputErrorsMap(errorsMap)
     }
-
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         if (dayOfMonth in 1..9) {
