@@ -109,6 +109,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             setErrorObserver()
             checkForErrors()
             if (!hasError && isEditingTask) {
+
                 viewModel.updateTask(task)
                 viewModel.setHasChangedValues(false)
                 findNavController().navigateUp()
@@ -171,17 +172,16 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun setErrorObserver() {
-        val testMap: Map<String, EditText> = mapOf(
-            "title" to binding.etTaskTitle.editText!!,
-            "date" to binding.etTaskDate.editText!!,
-            "startingTime" to binding.etTaskStartingTime.editText!!,
-            "endingTime" to binding.etTaskEndingTime.editText!!,
-            "priority" to binding.etTaskPriority.editText!!,
-        )
         viewModel.inputErrorsMap.observe(this.viewLifecycleOwner) { newMap ->
             errorsMap = newMap
             for (currentEditText in errorsMap.keys) {
-                testMap[currentEditText]!!.error = errorsMap[currentEditText]
+                when (currentEditText){
+                    "title" -> binding.etTaskTitle.editText?.error = errorsMap[currentEditText]
+                    "date" -> binding.etTaskDate.editText?.error = errorsMap[currentEditText]
+                    "startingTime" -> binding.etTaskStartingTime.editText?.error = errorsMap[currentEditText]
+                    "endingTime"-> binding.etTaskEndingTime.editText?.error = errorsMap[currentEditText]
+                    "priority"-> binding.etTaskPriority.editText?.error = errorsMap[currentEditText]
+                }
             }
         }
     }
