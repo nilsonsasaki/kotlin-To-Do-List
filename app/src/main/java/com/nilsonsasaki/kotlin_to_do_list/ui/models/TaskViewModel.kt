@@ -19,6 +19,13 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
         priority = "Normal",
         description = ""
     )
+    private val emptyErrorsMap = mapOf<String, String?>(
+        "title" to null,
+        "date" to null,
+        "startingTime" to null,
+        "endingTime" to null,
+        "priority" to null,
+    )
 
     private val _editingTask: MutableLiveData<Task> = MutableLiveData(
         emptyTask
@@ -32,26 +39,28 @@ class TaskViewModel(private val taskDao: TaskDao) : ViewModel() {
     private val _hasChangedValues: MutableLiveData<Boolean> = MutableLiveData(false)
     val hasChangedValues: LiveData<Boolean> = _hasChangedValues
 
-    fun setHasChangedValues(value:Boolean){
+    fun setHasChangedValues(value: Boolean) {
         _hasChangedValues.value = value
     }
 
-    private val _inputErrorsMap :MutableLiveData<Map<String,String>> = MutableLiveData(mapOf<String,String>())
-    val inputErrorsMap:LiveData<Map<String,String>> = _inputErrorsMap
+    private val _inputErrorsMap: MutableLiveData<Map<String, String?>> =
+        MutableLiveData(emptyErrorsMap)
 
-    fun setInputErrorsMap(errorsMap:Map<String,String>){
+    val inputErrorsMap: LiveData<Map<String, String?>> = _inputErrorsMap
+
+    fun setInputErrorsMap(errorsMap: Map<String, String?>) {
         _inputErrorsMap.value = errorsMap
     }
 
-    fun clearErrorsMap(){
-        _inputErrorsMap.value = mapOf<String,String>()
+    fun clearErrorsMap() {
+        _inputErrorsMap.value = emptyErrorsMap
     }
 
-    private val _hasInputErrors:MutableLiveData<Boolean> = MutableLiveData(false)
-    val hasInputErrors:LiveData<Boolean> = _hasInputErrors
+    private val _hasInputErrors: MutableLiveData<Boolean> = MutableLiveData(false)
+    val hasInputErrors: LiveData<Boolean> = _hasInputErrors
 
-    fun setHasInputErrors(value: Boolean){
-        _hasInputErrors.value=value
+    fun setHasInputErrors(value: Boolean) {
+        _hasInputErrors.value = value
     }
 
     fun getByDate(itemDate: String): LiveData<List<Task>> = taskDao.getByDate(itemDate).asLiveData()
