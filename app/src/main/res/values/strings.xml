@@ -14,7 +14,7 @@
     <string name="ending_time_text">Ending Time</string>
     <string name="priority_text">Priority</string>
     <string name="periodicity_text">Periodicity</string>
-    <string name="Title_text">Title</string>
+    <string name="Title_text">Title*</string>
     <string name="description_text">Description</string>
     <string name="edit_task_text">Edit Task</string>
     <string name="delete_text">Delete</string>
