@@ -31,7 +31,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     private val navigationArgs: EditTaskFragmentArgs by navArgs()
 
     lateinit var task: Task
-    private lateinit var errorsMap: Map<String, String>
+    private lateinit var errorsMap: Map<String, String?>
 
     private var day = 0
     private var month = 0
@@ -202,6 +202,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     }
 
     private fun checkForErrors() {
+        getDateAndTimeCalendar()
         checkBlankValue()
         checkDate()
     }
@@ -209,22 +210,24 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     private fun checkBlankValue() {
         if (binding.etTaskTitle.editText?.text.isNullOrBlank()) {
             addError("title", getString(R.string.blank_input_error_text, "title"))
-
+        } else {
+            removeError("title")
         }
     }
 
+
     private fun checkDate() {
-        getDateAndTimeCalendar()
         val inputDate = task.date.substring(0, 2).toInt()
         val inputMonth = task.date.substring(3, 5).toInt()
         val inputYear = task.date.substring(6, 10).toInt()
 
         if (inputYear < year) {
             addError("date", getString(R.string.invalid_date_input_error_text))
-        } else if (inputYear == year && inputMonth < month) {
+        } else if (inputYear == year && inputMonth < month + 1) {
             addError("date", getString(R.string.invalid_date_input_error_text))
-        } else if (inputYear == year && inputMonth == month && inputDate < day)
+        } else if (inputYear == year && inputMonth == month + 1 && inputDate < day) {
             addError("date", getString(R.string.invalid_date_input_error_text))
+        } else removeError("date")
     }
 
     private fun addError(textField: String, errorText: String) {
@@ -235,9 +238,21 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         viewModel.setInputErrorsMap(errorsMap)
     }
 
+    private fun removeError(textField: String) {
+        errorsMap = errorsMap + Pair(textField, null)
+        var hasValue = false
+        for (value in errorsMap.values) {
+            if (value != null) {
+                hasValue = true
+            }
+        }
+        viewModel.setHasInputErrors(hasValue)
+        viewModel.setHasChangedValues(true)
+        viewModel.setInputErrorsMap(errorsMap)
+    }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        binding.etTaskDate.text = dateFormat(dayOfMonth, month, year)
+        binding.etTaskDate.text = dateFormat(dayOfMonth, month + 1, year)
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
