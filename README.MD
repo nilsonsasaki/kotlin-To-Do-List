@@ -6,11 +6,13 @@ Esse aplicativo foi desenvoldido como solução do trabalho final do Santander B
 
 O Kotlin to do List é um aplicativo de lembretes de Tarefas onde o usuário pode adicionar, remover e editar tarefas que possui uma Activity que é host para três fragmentos, onde um fragmento é a lista de tarefas, um fragmento mostra os detalhes da tarefa e um fragmento é responsável por criar ou editar tarefas.
 
-Pode-se navegar da lista de tarefas para os detalhes de uma tarefa tocando-a, além disso pode-se usar o FloatingActionButton para navegar para o fragmento de criação de tarefas.
+Pode-se navegar da lista de tarefas para os detalhes de uma tarefa tocando-a,filtrar os resultados para o dia atual tocaldo o texto All Tasks, além disso pode-se usar o FloatingActionButton para navegar para o fragmento de criação de tarefas.
 
 No fragmento de detalhes da tarefa específica pode-se deletar a tarefa através de um botão ou edita-la pelo Floating ActionButton
 
 O fragmento de criação de tarefas, pode-se inserir strings para o Título, utilizar o datePicker e timePicker para a data e horário além de escolher a prioridade em um dropdown menu
+
+Foram implementados testes para verificar se o titulo esta em branco, se a data e horário são posteriores aos valores atuais, além disso o tempo de término deve sedr maior que a data de início
 
 # Aprendizado
 
@@ -24,7 +26,5 @@ Para o desenvolvimento do app foram utilizados:
 
 # O que poderia ser desenvolvido:
 
-1. Menu na Lista de Tarefas para filtrar resultados
-2. Aprimorar o Layout além de configurar todos os componentes de forma a tornar a experiência do usiário melhor
-3. Testes para o preenchimento dos campos (atualmente todos os campos exceto a descrição não devem ser blank porém a sinalização de erro não é exibido em todos os campos)
-4. Funcionalidades como mostrar lembretes , definir local da tarefa, repetição da tarefa entre outros
+1. Aprimorar o Layout além de configurar todos os componentes de forma a tornar a experiência do usiário melhor
+2. Funcionalidades como mostrar lembretes , definir local da tarefa, repetição da tarefa entre outros
