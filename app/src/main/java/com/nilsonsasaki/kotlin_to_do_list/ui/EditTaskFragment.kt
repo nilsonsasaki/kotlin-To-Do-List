@@ -205,7 +205,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         getDateAndTimeCalendar()
         checkBlankValue()
         checkDate()
-        checkStartingTime()
+        checkTimeInputs()
     }
 
     private fun checkBlankValue() {
@@ -231,15 +231,35 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         } else removeError("date")
     }
 
-    private fun checkStartingTime() {
-        val inputHour = task.startingTime.substring(0, 2).toInt()
-        val inputMinute = task.startingTime.substring(3, 5).toInt()
+    private fun checkTimeInputs(){
+        val startingHourInput = task.startingTime.substring(0, 2).toInt()
+        val startingMinuteInput= task.startingTime.substring(3, 5).toInt()
+        val endingHourInput = task.endingTime.substring(0, 2).toInt()
+        val endingMinuteInput= task.endingTime.substring(3, 5).toInt()
+        checkStartingTime(startingHourInput,startingMinuteInput)
+        checkEndingTime(startingHourInput,startingMinuteInput,endingHourInput,endingMinuteInput)
+    }
+
+    private fun checkStartingTime(inputHour:Int,inputMinute:Int) {
 
         if (inputHour < hour) {
             addError("startingTime", getString(R.string.invalid_startingTime_input_error_text))
         } else if (inputHour == hour && inputMinute < minute) {
-            addError("date", getString(R.string.invalid_startingTime_input_error_text))
+            addError("startingTime", getString(R.string.invalid_startingTime_input_error_text))
         } else removeError("startingTime")
+    }
+
+    private fun checkEndingTime(
+        startingHourInput:Int,
+        startingMinuteInput:Int,
+        endingHourInput:Int,
+        endingMinuteInput:Int ) {
+
+        if (endingHourInput < startingHourInput) {
+            addError("endingTime", getString(R.string.invalid_endingTime_input_error_text))
+        } else if (endingHourInput  == startingHourInput && endingMinuteInput < startingMinuteInput) {
+            addError("endingTime", getString(R.string.invalid_endingTime_input_error_text))
+        } else removeError("endingTime")
     }
 
     private fun addError(textField: String, errorText: String) {
