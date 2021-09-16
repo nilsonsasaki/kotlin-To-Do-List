@@ -29,4 +29,5 @@
     <string name="blank_input_error_text">%1$s can\'t be  blank</string>
     <string name="invalid_date_input_error_text">Date can\'t be in the past</string>
     <string name="invalid_startingTime_input_error_text">"StartingTime can't be in past "</string>
+    <string name="invalid_endingTime_input_error_text">Ending time can\'t be before start</string>
 </resources>
