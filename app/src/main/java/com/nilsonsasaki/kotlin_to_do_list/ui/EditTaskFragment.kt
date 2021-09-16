@@ -207,14 +207,19 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     private fun checkBlankValue() {
         if (binding.etTaskTitle.editText?.text.isNullOrBlank()) {
-            errorsMap = errorsMap + mapOf(
-                "title" to getString(R.string.blank_input_error_text, "title")
-            )
-            viewModel.setHasChangedValues(true)
-            viewModel.setHasInputErrors(true)
-            viewModel.setInputErrorsMap(errorsMap)
+            addError("title", getString(R.string.blank_input_error_text, "title"))
+
         }
     }
+
+    private fun addError(textField: String, errorText: String) {
+
+        errorsMap = errorsMap + mapOf(textField to errorText)
+        viewModel.setHasChangedValues(true)
+        viewModel.setHasInputErrors(true)
+        viewModel.setInputErrorsMap(errorsMap)
+    }
+
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         binding.etTaskDate.text = dateFormat(dayOfMonth, month, year)
