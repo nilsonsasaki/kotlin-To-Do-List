@@ -205,6 +205,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         getDateAndTimeCalendar()
         checkBlankValue()
         checkDate()
+        checkStartingTime()
     }
 
     private fun checkBlankValue() {
@@ -228,6 +229,17 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         } else if (inputYear == year && inputMonth == month + 1 && inputDate < day) {
             addError("date", getString(R.string.invalid_date_input_error_text))
         } else removeError("date")
+    }
+
+    private fun checkStartingTime() {
+        val inputHour = task.startingTime.substring(0, 2).toInt()
+        val inputMinute = task.startingTime.substring(3, 5).toInt()
+
+        if (inputHour < hour) {
+            addError("startingTime", getString(R.string.invalid_startingTime_input_error_text))
+        } else if (inputHour == hour && inputMinute < minute) {
+            addError("date", getString(R.string.invalid_startingTime_input_error_text))
+        } else removeError("startingTime")
     }
 
     private fun addError(textField: String, errorText: String) {
