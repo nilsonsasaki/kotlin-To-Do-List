@@ -203,6 +203,7 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     private fun checkForErrors() {
         checkBlankValue()
+        checkDate()
     }
 
     private fun checkBlankValue() {
@@ -210,6 +211,20 @@ class EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             addError("title", getString(R.string.blank_input_error_text, "title"))
 
         }
+    }
+
+    private fun checkDate() {
+        getDateAndTimeCalendar()
+        val inputDate = task.date.substring(0, 2).toInt()
+        val inputMonth = task.date.substring(3, 5).toInt()
+        val inputYear = task.date.substring(6, 10).toInt()
+
+        if (inputYear < year) {
+            addError("date", getString(R.string.invalid_date_input_error_text))
+        } else if (inputYear == year && inputMonth < month) {
+            addError("date", getString(R.string.invalid_date_input_error_text))
+        } else if (inputYear == year && inputMonth == month && inputDate < day)
+            addError("date", getString(R.string.invalid_date_input_error_text))
     }
 
     private fun addError(textField: String, errorText: String) {
