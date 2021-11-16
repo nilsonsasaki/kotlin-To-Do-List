@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Night Theme colors -->
+    <color name="primaryColor">#1a214f</color>
+    <color name="primaryLightColor">#47487c</color>
+    <color name="primaryDarkColor">#000027</color>
+    <color name="secondaryColor">#5f58a8</color>
+    <color name="secondaryLightColor">#9085da</color>
+    <color name="secondaryDarkColor">#2f2f78</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
 </resources>
