@@ -1,6 +1,6 @@
 # Kotlin to do List
 
-Esse aplicativo foi desenvoldido como solução do trabalho final do Santander Bootcamp | Mobile Developer oferecido pela Digital Inovation One
+Esse aplicativo foi desenvoldido primeiramente como solução do trabalho final do Santander Bootcamp | Mobile Developer, onde o aplicativo era bem simples, sem a utilização de fragmentos ou banco de dados SQLite, contudo após o termino do bootcamp continuo desenvolvendo o aplicativo de forma a praticar e aprimorar os conhecimentos
 
 # Introdução
 
@@ -12,7 +12,7 @@ No fragmento de detalhes da tarefa específica pode-se deletar a tarefa através
 
 O fragmento de criação de tarefas, pode-se inserir strings para o Título, utilizar o datePicker e timePicker para a data e horário além de escolher a prioridade em um dropdown menu
 
-Foram implementados testes para verificar se o titulo esta em branco, se a data e horário são posteriores aos valores atuais, além disso o tempo de término deve sedr maior que a data de início
+Foram implementados validações para verificar se o titulo esta em branco, se a data e horário são posteriores aos valores atuais, além disso o tempo de término deve sedr maior que a data de início
 
 # Aprendizado
 
@@ -26,5 +26,6 @@ Para o desenvolvimento do app foram utilizados:
 
 # O que poderia ser desenvolvido:
 
-1. Aprimorar o Layout além de configurar todos os componentes de forma a tornar a experiência do usiário melhor
-2. Funcionalidades como mostrar lembretes , definir local da tarefa, repetição da tarefa entre outros
+1. Aprimorar o Layout e tema
+2. Configurar o comportamento de todos os componentes de forma a tornar a experiência do usiário melhor
+3. Funcionalidades como mostrar lembretes , definir local da tarefa, repetição da tarefa entre outros
